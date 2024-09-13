@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Facebook, Instagram, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import ShinyButton from "@/components/magicui/shiny-button"
+import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 
 export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -85,7 +87,9 @@ export default function LandingPage() {
             <div className="text-center text-white">
               <h1 className="text-4xl font-bold mb-4 transition-all duration-300 ease-in-out hover:scale-150">Find Your Dream Home</h1>
               <p className="text-xl mb-8 transition-all duration-300 ease-in-out hover:scale-105">Discover the perfect property with Ryan's expert guidance</p>
-              <Button className="bg-[#002352] hover:bg-[#002352]/90 text-white transition-all duration-300 ease-in-out hover:scale-125">Explore Listings</Button>
+              <ShinyButton className="bg-[#002352] hover:bg-[#87b3ff]/90 text-white transition-all duration-300 ease-in-out hover:scale-125">
+                Explore Listings
+              </ShinyButton>
             </div>
           </div>
           <button onClick={prevSlide} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 rounded-full p-2 transition-colors">
@@ -98,41 +102,90 @@ export default function LandingPage() {
         
         
         <section className="py-16 bg-gray-100">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out text-[#002352] hover:animate-shake">Why Choose Ryan?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              {['Expert Agents', 'Wide Selection', 'Easy Process'].map((feature, index) => (
-                <Card key={index} className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-                  <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out hover:text-[#002352]">{feature}</h3>
-                    <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out text-[#002352]">Why Choose Ryan?</h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      {/* Define an array with unique descriptions */}
+      {[
+        {
+          title: 'Expert Agent',
+          description: 'With years of experience, Ryan ensures that every transaction is smooth and hassle-free.'
+        },
+        {
+          title: 'Proven Track Record',
+          description: 'Ryan’s successful sales history speaks for itself, making him the go-to agent in the market.'
+        },
+        {
+          title: 'Highly Reviewed',
+          description: 'Clients consistently rate Ryan as top-tier, thanks to his dedication and professionalism.'
+        }
+      ].map((feature, index) => (
+        <Card key={index} className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 border-beam">
+          <CardContent className="p-6 text-center">
+            <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out text-[#002352]">
+              {feature.title}
+            </h3>
+            <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">
+              {feature.description}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+
         
         
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out hover:text-[#002352]">What Our Clients Say</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {[1, 2, 3].map((testimonial) => (
-                <Card key={testimonial} className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-gray-600 mb-4 transition-all duration-300 ease-in-out hover:text-black">&ldquo;Our real estate agency made finding our dream home a breeze. Their expertise and dedication are unmatched!&rdquo;</p>
-                    <div className="flex items-center justify-center">
+            <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out text-[#002352]">Testimonials from Happy Clients</h2>
+            <InfiniteMovingCards
+              items={[
+                {
+                  quote: "Ryan is amazing. He knows the areas well and is very patient and explains everything in detail. He helped guide and teach me about buying my first house. Anyone looking to buy a house I highly recommend Ryan. I can’t thank him enough!",
+                  name: "Dalton Cochrane",
+                  title: "First-Time Homebuyer"
+                },
+                {
+                  quote: "Ryan will listen in detail of your needs! He goes above and beyond to help you find the perfect home! He listened to our wants and needs and was patient with us. The buying process was seamless and easy working with Ryan!",
+                  name: "Kendra DuPont",
+                  title: "SatisfiedHomebuyer"
+                },
+                {
+                  quote: "Ryan was great! He made buying my first home super easy and non-stressful. I absolutely wouldn’t have been able to buy a home without him. He was very professional. I highly recommend him!",
+                  name: "Madison Fetcher",
+                  title: "Satisfied Homebuyer"
+                },
+                {
+                  quote: "Ryan assisted my wife and I in finding our new home.  He was very responsive and focused on finding us the perfect fit to meet all our needs.",
+                  name: "Sam Creel",
+                  title: "Satisified Homebuyer"
+                },
+                {
+                  quote: "Ryan's local knowledge was invaluable. He found us a perfect home in an ideal neighborhood.",
+                  name: "David & Lisa Thompson",
+                  title: "Relocating Couple"
+                }
+              ]}
+              direction="right"
+              speed="slow"
+            >
+              {(testimonial: { quote: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; name: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; title: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined }) => (
+                <Card className="w-[350px] h-[250px] flex-shrink-0 mx-2 hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                  <CardContent className="p-6 flex flex-col justify-between h-full">
+                    <p className="text-gray-600 mb-4 transition-all duration-300 ease-in-out hover:text-black">&ldquo;{testimonial.quote}&rdquo;</p>
+                    <div className="flex items-center">
                       <Image src="/placeholder.svg?height=40&width=40" alt="Client" width={40} height={40} className="rounded-full mr-4" />
                       <div>
-                        <p className="font-semibold transition-all duration-300 ease-in-out hover:text-[#002352]">John Doe</p>
-                        <p className="text-sm text-gray-500 transition-all duration-300 ease-in-out hover:text-black">Happy Homeowner</p>
+                        <p className="font-semibold transition-all duration-300 ease-in-out hover:text-[#002352]">{testimonial.name}</p>
+                        <p className="text-sm text-gray-500 transition-all duration-300 ease-in-out hover:text-black">{testimonial.title}</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              )}
+            </InfiniteMovingCards>
           </div>
         </section>
        

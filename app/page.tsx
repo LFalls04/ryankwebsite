@@ -80,8 +80,8 @@ export default function LandingPage() {
             <nav className="flex-1 flex items-center justify-center mr-15 -ml-40">
               <ul className="flex space-x-11 text-sm font-bold">
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/buy">Buy</Link></li>
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/rent">Rent</Link></li>
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/sell">Sell</Link></li>
+                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/listings">Explore Listings</Link></li>
+                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/contact">Contact</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/meet-ryan">Meet Ryan</Link></li>
               </ul>
             </nav>

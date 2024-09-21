@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Facebook, Instagram, ChevronLeft, ChevronRight } from "lucide-react"
@@ -9,6 +9,9 @@ import Image from "next/image"
 import ShinyButton from "@/components/magicui/shiny-button"
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 import { BorderBeam } from "@/components/magicui/border-beam"
+import Slider from "react-slick"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 
 export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -16,35 +19,6 @@ export default function LandingPage() {
     "/public/home1.jpg",
     "/public/home2.jpg",
     "/public/home3.jpg"
-  ]
-  const featuredListings = [
-    {
-      id: 1,
-      title: 'Modern Apartment in Downtown',
-      price: '$350,000',
-      beds: 2,
-      baths: 2,
-      sqft: 1200,
-      image: '/placeholder.svg?height=300&width=400'
-    },
-    {
-      id: 2,
-      title: 'Cozy Suburban Home',
-      price: '$450,000',
-      beds: 3,
-      baths: 2.5,
-      sqft: 1800,
-      image: '/placeholder.svg?height=300&width=400'
-    },
-    {
-      id: 3,
-      title: 'Luxury Penthouse with City View',
-      price: '$1,200,000',
-      beds: 4,
-      baths: 3,
-      sqft: 2500,
-      image: '/placeholder.svg?height=300&width=400'
-    }
   ]
 
   useEffect(() => {
@@ -60,6 +34,34 @@ export default function LandingPage() {
 
   const prevSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length)
+  }
+
+  const featuredListings = [
+    {
+      title: "Luxury Villa",
+      description: "A beautiful villa with stunning views.",
+      image: "/public/villa.jpg"
+    },
+    {
+      title: "Modern Apartment",
+      description: "A modern apartment in the city center.",
+      image: "/public/apartment.jpg"
+    },
+    {
+      title: "Cozy Cottage",
+      description: "A cozy cottage in the countryside.",
+      image: "/public/cottage.jpg"
+    }
+  ]
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <ChevronRight className="h-6 w-6 text-white" />,
+    prevArrow: <ChevronLeft className="h-6 w-6 text-white" />
   }
 
   return (
@@ -80,7 +82,7 @@ export default function LandingPage() {
             <nav className="flex-1 flex items-center justify-center mr-15 -ml-40">
               <ul className="flex space-x-11 text-sm font-bold">
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/buy">Buy</Link></li>
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/listings">Explore Listings</Link></li>
+                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/explore-listings">Explore Listings</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/contact">Contact</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/meet-ryan">Meet Ryan</Link></li>
               </ul>
@@ -96,8 +98,6 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
-      
-      
       
       <main className="flex-1">
         <section className="relative h-[600px] overflow-hidden">
@@ -130,76 +130,64 @@ export default function LandingPage() {
           </button>
         </section>
 
-    <section className="bg-gray-100 py-12">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-[#002352]">Featured Listings</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredListings.map((listing) => (
-            <div key={listing.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <Image
-                src={listing.image}
-                alt={listing.title}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{listing.title}</h3>
-                <p className="text-gray-600 mb-2">{listing.price}</p>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>{listing.beds} beds</span>
-                  <span>{listing.baths} baths</span>
-                  <span>{listing.sqft} sqft</span>
+        <section className="bg-gray-100 py-12">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#002352]">Featured Listings</h2>
+            <Slider {...sliderSettings}>
+              {featuredListings.map((listing, index) => (
+                <div key={index} className="px-4">
+                  <Card className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                    <Image src={listing.image} alt={listing.title} width={400} height={300} className="rounded-t-lg" />
+                    <CardContent className="p-6 text-center">
+                      <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out text-[#002352]">
+                        {listing.title}
+                      </h3>
+                      <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">
+                        {listing.description}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <Link href={`/listings/${listing.id}`} className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
-                  View Details
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  
- 
-        
-        <section className="py-16 bg-gray-90">
-  <div className="container mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out text-[#002352]">Why Choose Ryan?</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-      {[
-        {
-          title: 'Expert Agent',
-          description: 'With years of experience, Ryan ensures that every transaction is smooth and hassle-free.'
-        },
-        {
-          title: 'Proven Track Record',
-          description: 'Ryan\'s successful sales history speaks for itself, making him the go-to agent in the market.'
-        },
-        {
-          title: 'Highly Reviewed',
-          description: 'Clients consistently rate Ryan as top-tier, thanks to his dedication and professionalism.'
-        }
-      ].map((feature, index) => (
-        <Card key={index}>
-          <Card className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-            <CardContent className="p-6 text-center">
-              <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out text-[#002352]">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">
-                {feature.description}
-              </p>
-            </CardContent>
-          </Card>
-        </Card>
-      ))}
-    </div>
-  </div>
-</section>
+              ))}
+            </Slider>
+          </div>
+        </section>
 
-        
-        
+        <section className="py-16 bg-gray-90">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-8 transition-all duration-300 ease-in-out text-[#002352]">Why Choose Ryan?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              {[
+                {
+                  title: 'Expert Agent',
+                  description: 'With years of experience, Ryan ensures that every transaction is smooth and hassle-free.'
+                },
+                {
+                  title: 'Proven Track Record',
+                  description: 'Ryan\'s successful sales history speaks for itself, making him the go-to agent in the market.'
+                },
+                {
+                  title: 'Highly Reviewed',
+                  description: 'Clients consistently rate Ryan as top-tier, thanks to his dedication and professionalism.'
+                }
+              ].map((feature, index) => (
+                <Card key={index}>
+                  <Card className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                    <CardContent className="p-6 text-center">
+                      <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out text-[#002352]">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="py-12">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-4 transition-all duration-300 ease-in-out text-[#002352]">Testimonials from Happy Clients</h2>
@@ -252,10 +240,7 @@ export default function LandingPage() {
             />
           </div>
         </section>
-       
-       
-       
-       
+
         <section className="py-16 bg-[#002352] text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4 transition-all duration-300 ease-in-out hover:scale-105">Ready to Find Your Perfect Home?</h2>
@@ -264,8 +249,6 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-      
-      
       
       <footer className="bg-gray-900 text-white py-8">
         <div className="container mx-auto px-4">

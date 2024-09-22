@@ -11,6 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch data' });
+    console.error(error);
+    res.status(500).json({ message: 'API request failed' });
   }
 }

@@ -1,35 +1,56 @@
-"use client"
-
-import { useEffect, useState } from 'react';
-
+"use client";
+import { useEffect, useState } from "react";
 interface Property {
-  id: number;
-  title: string;
-  address: string;
-  price: string;
+  zpid: string;
+  address: {
+    streetAddress: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
+  price: number;
+  bathrooms: number;
+  bedrooms: number;
 }
-
-function PropertyList() {
+export default function PropertyList() {
   const [properties, setProperties] = useState<Property[]>([]);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    // Fetch property data from your backend or API
-    fetch('/api/property') // You should implement an API route to fetch this data
-      .then(response => response.json())
-      .then(data => setProperties(data))
-      .catch(error => console.error('Error fetching properties:', error));
+    const fetchProperties = async () => {
+      try {
+        // This is just an example. You'd need to implement a way to get multiple property IDs.
+        const propertyIds = ["1234567", "2345678", "3456789"];
+        const fetchedProperties = await Promise.all(
+          propertyIds.map(async (zpid) => {
+            const response = await fetch(`/api/property?zpid=${zpid}`);
+            if (!response.ok) throw new Error("Failed to fetch property");
+            return response.json();
+          })
+        );
+        setProperties(fetchedProperties);
+      } catch (err) {
+        setError("Error fetching properties");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProperties();
   }, []);
-
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
   return (
     <div>
       <h1>Property Listings</h1>
       {properties.length > 0 ? (
         <ul>
           {properties.map((property) => (
-            <li key={property.id}>
-              <h2>{property.title}</h2>
-              <p>{property.address}</p>
-              <p>{property.price}</p>
+            <li key={property.zpid}>
+              <h2>{property.address.streetAddress}</h2>
+              <p>{`${property.address.city}, ${property.address.state} ${property.address.zipcode}`}</p>
+              <p>Price: ${property.price.toLocaleString()}</p>
+              <p>{`${property.bedrooms} bed, ${property.bathrooms} bath`}</p>
             </li>
           ))}
         </ul>
@@ -39,5 +60,3 @@ function PropertyList() {
     </div>
   );
 }
-
-export default PropertyList;

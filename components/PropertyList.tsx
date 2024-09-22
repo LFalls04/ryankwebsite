@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from 'react';
 
 interface Property {
@@ -12,7 +14,7 @@ function PropertyList() {
 
   useEffect(() => {
     // Fetch property data from your backend or API
-    fetch('/api/properties') // You should implement an API route to fetch this data
+    fetch('/api/property') // You should implement an API route to fetch this data
       .then(response => response.json())
       .then(data => setProperties(data))
       .catch(error => console.error('Error fetching properties:', error));

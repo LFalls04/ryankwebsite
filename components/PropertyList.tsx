@@ -24,13 +24,14 @@ export default function PropertyList() {
         const fetchedProperties = await Promise.all(
           propertyIds.map(async (zpid) => {
             const response = await fetch(`/api/property?zpid=${zpid}`);
-            if (!response.ok) throw new Error("Failed to fetch property");
-            return response.json();
+            if (!response.ok) throw new Error(`Failed to fetch property with zpid: ${zpid}`);
+            const data: Property = await response.json();
+            return data;
           })
         );
         setProperties(fetchedProperties);
       } catch (err) {
-        setError("Error fetching properties");
+        setError(err.message || "Error fetching properties");
         console.error(err);
       } finally {
         setLoading(false);

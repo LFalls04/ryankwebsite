@@ -9,9 +9,6 @@ import Image from "next/image"
 import ShinyButton from "@/components/magicui/shiny-button"
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 import { BorderBeam } from "@/components/magicui/border-beam"
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
 
 export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -54,15 +51,6 @@ export default function LandingPage() {
     }
   ]
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <ChevronRight className="h-6 w-6 text-white" />,
-    prevArrow: <ChevronLeft className="h-6 w-6 text-white" />
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -133,23 +121,6 @@ export default function LandingPage() {
         <section className="bg-gray-100 py-12">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-8 text-[#002352]">Featured Listings</h2>
-            <Slider {...sliderSettings}>
-              {featuredListings.map((listing, index) => (
-                <div key={index} className="px-4">
-                  <Card className="hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-                    <Image src={listing.image} alt={listing.title} width={400} height={300} className="rounded-t-lg" />
-                    <CardContent className="p-6 text-center">
-                      <h3 className="text-xl font-semibold mb-2 transition-all duration-300 ease-in-out text-[#002352]">
-                        {listing.title}
-                      </h3>
-                      <p className="text-gray-600 transition-all duration-300 ease-in-out hover:text-black">
-                        {listing.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </Slider>
           </div>
         </section>
 

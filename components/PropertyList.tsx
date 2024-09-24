@@ -20,7 +20,7 @@ export default function PropertyList() {
     const fetchProperties = async () => {
       try {
         // This is just an example. You'd need to implement a way to get multiple property IDs.
-        const propertyIds = ["1234567", "2345678", "3456789"];
+        const propertyIds = ["124523", "2345678", "3456789"];
         const fetchedProperties = await Promise.all(
           propertyIds.map(async (zpid) => {
             const response = await fetch(`/api/property?zpid=${zpid}`);

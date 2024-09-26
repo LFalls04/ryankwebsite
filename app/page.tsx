@@ -33,25 +33,6 @@ export default function LandingPage() {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length)
   }
 
-  const featuredListings = [
-    {
-      title: "Luxury Villa",
-      description: "A beautiful villa with stunning views.",
-      image: "/public/villa.jpg"
-    },
-    {
-      title: "Modern Apartment",
-      description: "A modern apartment in the city center.",
-      image: "/public/apartment.jpg"
-    },
-    {
-      title: "Cozy Cottage",
-      description: "A cozy cottage in the countryside.",
-      image: "/public/cottage.jpg"
-    }
-  ]
-
-
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-white backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -172,7 +153,7 @@ export default function LandingPage() {
                 {
                   quote: "Ryan will listen in detail of your needs! He goes above and beyond to help you find the perfect home! He listened to our wants and needs and was patient with us. The buying process was seamless and easy working with Ryan!",
                   name: "Kendra DuPont",
-                  title: "SatisfiedHomebuyer"
+                  title: "Satisfied Homebuyer"
                 },
                 {
                   quote: "Ryan was great! He made buying my first home super easy and non-stressful. I absolutely wouldn't have been able to buy a home without him. He was very professional. I highly recommend him!",

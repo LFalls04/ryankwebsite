@@ -9,15 +9,15 @@ import Image from "next/image"
 import ShinyButton from "@/components/magicui/shiny-button"
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 import { BorderBeam } from "@/components/magicui/border-beam"
-import ContactModal from '@/app/contact-modal/contact-modal'
+import FeaturedListingsCarousel from "@/components/FeaturedListingsCarousel";
 
 export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const images = [
     "/public/home1.jpg",
     "/public/home2.jpg",
-    "/public/home3.jpg"
+    "/public/home3.jpg",
+    "/public/home7.jpg"
   ]
 
   useEffect(() => {
@@ -33,14 +33,6 @@ export default function LandingPage() {
 
   const prevSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length)
-  }
-
-  const openModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
   }
 
   return (
@@ -61,15 +53,15 @@ export default function LandingPage() {
             <nav className="flex-1 flex items-center justify-center mr-15 -ml-60">
               <ul className="flex space-x-11 text-sm font-bold">
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/explore-listings">Explore Listings</Link></li>
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/contact">Contact</Link></li>
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/meet-ryan">Meet Ryan</Link></li>
+                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="mailto:rkingsbury@kw.com">Contact</Link></li>
+                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/MeetRyan">Meet Ryan</Link></li>
               </ul>
             </nav>
             <div className="flex items-center space-x-4">
-              <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="p-2">
+              <Link href="https://www.facebook.com/rkingsburyres" target="_blank" rel="noopener noreferrer" className="p-2">
                 <Facebook className="h-5 w-5 text-[#002352] hover:text-[#002352]/80 transition-colors" />
               </Link>
-              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="p-2">
+              <Link href="https://www.instagram.com/rkingsburyres/" target="_blank" rel="noopener noreferrer" className="p-2">
                 <Instagram className="h-5 w-5 text-[#002352] hover:text-[#002352]/80 transition-colors" />
               </Link>
             </div>
@@ -95,7 +87,8 @@ export default function LandingPage() {
             <div className="text-center text-white">
               <h1 className="text-4xl font-bold mb-4 transition-all duration-300 ease-in-out hover:scale-150">Find Your Dream Home</h1>
               <p className="text-xl mb-8 transition-all duration-300 ease-in-out hover:scale-105">Discover the perfect property with Ryan's expert guidance</p>
-              <ShinyButton className="bg-[#002352] hover:bg-[#87b3ff]/90 text-white transition-all duration-300 ease-in-out hover:scale-125">
+              <a href=""></a>
+                <ShinyButton className="bg-[#002352] hover:bg-[#87b3ff]/90 text-white transition-all duration-300 ease-in-out hover:scale-125">
                 Explore Listings
               </ShinyButton>
             </div>
@@ -108,9 +101,11 @@ export default function LandingPage() {
           </button>
         </section>
 
-        <section className="bg-gray-100 py-12">
+        <section id='featuredlistings' className="bg-gray-100 py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 text-[#002352]">Featured Listings</h2>
+            <div>
+              <FeaturedListingsCarousel />
+            </div>
           </div>
         </section>
 
@@ -206,7 +201,9 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4 transition-all duration-300 ease-in-out hover:scale-105">Ready to Find Your Perfect Home?</h2>
             <p className="mb-8 transition-all duration-300 ease-in-out hover:text-gray-300">Let me help you discover the property of your dreams.</p>
-            <Button onClick={openModal} className="bg-white text-[#002352] hover:bg-gray-100 transition-all duration-300 ease-in-out hover:scale-105">Contact Me Today</Button>
+            <a href='mailto:rkingsbury@kw.com'>
+              <Button className="bg-white text-[#002352] hover:bg-gray-100 transition-all duration-300 ease-in-out hover:scale-105">Contact Me Today</Button>
+            </a>
           </div>
         </section>
       </main>
@@ -215,32 +212,29 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center items-start gap-8">
             <div className="w-full md:w-auto mb-6 md:mb-0 text-center">
-              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#002352]">Ryan Kingsbury</h3>
-              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Your trusted partner in finding the perfect property.</p>
+              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#589bf1]">Ryan Kingsbury</h3>
+              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Your trusted partner in finding <br /> the perfect property.</p>
             </div>
             <div className="w-full md:w-auto mb-6 md:mb-0 text-center">
-              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#002352]">Quick Links</h3>
+              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#589bf1]">Quick Links</h3>
               <nav className="flex flex-col space-y-2">
-                <Link href="/buy" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Buy</Link>
-                <Link href="/rent" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Rent</Link>
-                <Link href="/sell" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Sell</Link>
+                <Link href="/buy" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Explore Listings</Link>
+                <Link href="/rent" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Contact</Link>
                 <Link href="/meet-ryan" className="text-sm hover:text-gray-300 transition-all duration-300 ease-in-out">Meet Ryan</Link>
               </nav>
             </div>
             <div className="w-full md:w-auto text-center">
-              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#002352]">Contact Us</h3>
-              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">123 Real Estate St, Cityville, State 12345</p>
+              <h3 className="text-lg font-semibold mb-4 transition-all duration-300 ease-in-out hover:text-[#589bf1]">Contact Us</h3>
+              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Evansville, IN</p>
               <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Phone: (123) 456-7890</p>
-              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Email: info@realestate.com</p>
+              <p className="text-sm transition-all duration-300 ease-in-out hover:text-gray-300">Email: rkingsbury@kw.com</p>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-            <p className="transition-all duration-300 ease-in-out hover:text-gray-300">&copy; {new Date().getFullYear()} Our Real Estate Agency. All rights reserved.</p>
+            <p className="transition-all duration-300 ease-in-out hover:text-gray-300">&copy; {new Date().getFullYear()} Ryan Kingsbury Real Estate Services. All rights reserved.</p>
           </div>
         </div>
       </footer>
-
-      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   )
 }

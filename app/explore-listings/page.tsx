@@ -34,9 +34,7 @@ const ExploreListings = () => {
         console.log(result);
         
         // Check if result is an array and set it to listings
-        if (Array.isArray(result.results)) {
-          setListings(result.results);
-        } else if (result.results) {
+        if (result.results) {
           // If listings are nested inside the result object, extract them
           setListings(result.results);
         } else {

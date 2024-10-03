@@ -26,36 +26,9 @@ interface Listing {
   price: string;
 }
 
-
-const listings: Listing[] = [
-  {
-    id: 1,
-    image: "/path/to/image1.jpg",
-    title: "Luxury Villa",
-    description: "A beautiful villa with stunning ocean views.",
-    price: "$2,500,000",
-  },
-  {
-    id: 2,
-    image: "/path/to/image2.jpg",
-    title: "Modern Apartment",
-    description: "A modern apartment located in the heart of the city.",
-    price: "$850,000",
-  },
-  {
-    id: 3,
-    image: "/path/to/image3.jpg",
-    title: "Cozy Cottage",
-    description: "A charming cottage in a peaceful countryside location.",
-    price: "$650,000",
-  },
-  // Add more listings as needed
-];
-
-
+const listings: Listing[] = [];
 
 const fetchListingsByCoordinates = async () => {
-  setLoading(true); // Set loading to true before fetching
 
   try {
     const url = 'https://zillow56.p.rapidapi.com/search_coordinates?status=forSale&output=json&sort=featured&listing_type=by_agent&isLotLand=false&doz=any&long=-87.5711&lat=37.9716&d=120' // Build URL using lat and lon
@@ -69,27 +42,28 @@ const fetchListingsByCoordinates = async () => {
     // Check if result is an array and set it to listings
     if (result.results) {
       // If listings are nested inside the result object, extract them
-      setListings(result.results);
+    for (let i = 0; i < 3; i++) {
+      listings.push(new listings(i, result.results[i].imgSrc, result.results[i].streetAddress, result.results[i].homeType, result.results[i].price));
+      listings[i].image = result.results[i].imgSrc;
+      
+      }
     } else {
       // If the result structure is unexpected, set listings to an empty array
-      setListings([]);
+     
     }
-
-    setLoading(false); // Set loading to false after data is fetched
   } catch (error) {
     console.error('Error fetching data:', error);
-    setLoading(false); // Set loading to false in case of error
   }
 };
 
-
+fetchListingsByCoordinates();
 
 const FeaturedListingsCarousel: React.FC = () => {
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
-    slidesToShow: 1, // Number of cards to show at once
+    slidesToShow: 3, // Number of cards to show at once
     slidesToScroll: 1, // Number of cards to scroll at once
     responsive: [
       {
@@ -107,6 +81,7 @@ const FeaturedListingsCarousel: React.FC = () => {
     ],
   };
 
+
   return (
     <section id="featuredlistings" className="bg-gray-100 py-4">
       <div className="container mx-auto px-4">
@@ -116,16 +91,11 @@ const FeaturedListingsCarousel: React.FC = () => {
         <Slider {...settings}>
           {listings.map((listing) => (
             <div key={listing.id} className="p-4">
-              <div className="card hover:shadow-lg transition-all duration-300 ease-in-out">
-                <div className="relative h-64">
-                  <Image
-                    src={listing.image}
-                    alt={listing.title}
-                    fill
-                    className="object-cover rounded-t-lg"
-                  />
+              <div className="card hover:shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+                <div className="relative h-65">
+                <img src={listing.image}  />
                 </div>
-                <div className="p-4">
+                <div className="p-4 mb-12">
                   <h3 className="text-xl font-bold text-[#002352] mb-2">
                     {listing.title}
                   </h3>

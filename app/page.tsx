@@ -20,12 +20,6 @@ export default function LandingPage() {
     "/public/home7.jpg"
   ]
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
 
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length)

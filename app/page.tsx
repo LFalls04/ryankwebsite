@@ -9,9 +9,11 @@ import Image from "next/image"
 import ShinyButton from "@/components/magicui/shiny-button"
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 import { BorderBeam } from "@/components/magicui/border-beam"
+import ContactModal from '@/app/contact-modal/contact-modal'
 
 export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const images = [
     "/public/home1.jpg",
     "/public/home2.jpg",
@@ -33,6 +35,14 @@ export default function LandingPage() {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length)
   }
 
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-white backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -48,9 +58,8 @@ export default function LandingPage() {
               />
               <span className="sr-only">Logo</span>
             </Link>
-            <nav className="flex-1 flex items-center justify-center mr-15 -ml-40">
+            <nav className="flex-1 flex items-center justify-center mr-15 -ml-60">
               <ul className="flex space-x-11 text-sm font-bold">
-                <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/buy">Buy</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/explore-listings">Explore Listings</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/contact">Contact</Link></li>
                 <li><Link className="relative inline-block hover:text-[#87b3ff] text-[#002532] font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#87b3ff] after:transition-all after:duration-300 hover:after:w-full" href="/meet-ryan">Meet Ryan</Link></li>
@@ -197,7 +206,7 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4 transition-all duration-300 ease-in-out hover:scale-105">Ready to Find Your Perfect Home?</h2>
             <p className="mb-8 transition-all duration-300 ease-in-out hover:text-gray-300">Let me help you discover the property of your dreams.</p>
-            <Button className="bg-white text-[#002352] hover:bg-gray-100 transition-all duration-300 ease-in-out hover:scale-105">Contact Me Today</Button>
+            <Button onClick={openModal} className="bg-white text-[#002352] hover:bg-gray-100 transition-all duration-300 ease-in-out hover:scale-105">Contact Me Today</Button>
           </div>
         </section>
       </main>
@@ -230,6 +239,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
+
 const options = {
   method: 'GET',
   headers: {
@@ -54,77 +55,77 @@ const ExploreListings = () => {
   };
 
   return (
-  <div className="container">
-    <h1>Explore Listings Near Coordinates: Lat {latitude}, Lon {longitude}</h1>
-    <p>Browse listings from properties near this area.</p>
+    <div className="container">
+      <h1>Explore Listings Near Coordinates: Lat {latitude}, Lon {longitude}</h1>
+      <p>Browse listings from properties near this area.</p>
 
-    {loading ? (
-      <p>Loading listings...</p>
-    ) : (
-      <>
-        <ul>
-          {Array.isArray(listings) && listings.length > 0 ? (
-            listings.map((listing, index) => (
-              <li key={index}>
-                <p><strong>Address:</strong> {listing.streetAddress}</p>
-                <p><strong>Price:</strong> {listing.price}</p>
-                <div>
-                  <strong>Images:</strong>
-                  {listing.imgSrc ? (
-                    <a href={`https://www.zillow.com/homedetails/${listing.zpid}_zpid`} target="_blank" rel="noopener noreferrer">
-                      <img src={listing.imgSrc} alt="Listing" />
-                    </a>
-                  ) : (
-                    <p>No images available</p>
-                  )}
+      {loading ? (
+        <p>Loading listings...</p>
+      ) : (
+        <>
+          <div className="listings-grid">
+            {Array.isArray(listings) && listings.length > 0 ? (
+              listings.map((listing, index) => (
+                <div key={index} className="listing-card">
+                  <p><strong>Address:</strong> {listing.streetAddress}</p>
+                  <p><strong>Price:</strong> {listing.price}</p>
+                  <div>
+                    {listing.imgSrc ? (
+                      <a href={`https://www.zillow.com/homedetails/${listing.zpid}_zpid`} target="_blank" rel="noopener noreferrer">
+                        <img src={listing.imgSrc} alt="Listing" />
+                      </a>
+                    ) : (
+                      <p>No images available</p>
+                    )}
+                  </div>
                 </div>
-              </li>
-            ))
-          ) : (
-            <p>No listings found</p>
-          )}
-        </ul>
+              ))
+            ) : (
+              <p>No listings found</p>
+            )}
+          </div>
 
-        {/* Enhanced pagination controls */}
-        <div className="pagination">
-          {(() => {
-            const pageNumbers = [];
-            const maxPagesToShow = 5; // Number of pages before and after current page
-            const startPage = Math.max(1, currentPage - maxPagesToShow);
-            const endPage = Math.min(totalPages, currentPage + maxPagesToShow);
+          {/* Enhanced pagination controls */}
+          <div className="pagination">
+            {(() => {
+              const pageNumbers = [];
+              const maxPagesToShow = 5; // Number of pages before and after current page
+              const startPage = Math.max(1, currentPage - maxPagesToShow);
+              const endPage = Math.min(totalPages, currentPage + maxPagesToShow);
 
-            // Add "..." to indicate skipped pages when needed
-            if (startPage > 1) {
-              pageNumbers.push(1);
-              if (startPage > 2) pageNumbers.push('...'); // Indicate skipped pages
-            }
+              // Add "..." to indicate skipped pages when needed
+              if (startPage > 1) {
+                pageNumbers.push(1);
+                if (startPage > 2) pageNumbers.push('...'); // Indicate skipped pages
+              }
 
-            for (let i = startPage; i <= endPage; i++) {
-              pageNumbers.push(i);
-            }
+              for (let i = startPage; i <= endPage; i++) {
+                pageNumbers.push(i);
+              }
 
-            if (endPage < totalPages) {
-              if (endPage < totalPages - 1) pageNumbers.push('...'); // Indicate skipped pages
-              pageNumbers.push(totalPages);
-            }
+              if (endPage < totalPages) {
+                if (endPage < totalPages - 1) pageNumbers.push('...'); // Indicate skipped pages
+                pageNumbers.push(totalPages);
+              }
 
-            return pageNumbers.map((number) => (
-              <button
-                key={number}
-                onClick={() => handlePageChange(number)}
-                disabled={currentPage === number}
-              >
-                {number}
-              </button>
-            ));
-          })()}
+              return pageNumbers.map((number) => (
+                <button
+                  key={number}
+                  onClick={() => handlePageChange(number)}
+                  disabled={currentPage === number}
+                  className="pagination-button"
+                >
+                  {number}
+                </button>
+              ));
+            })()}
 
-          <span className="page-indicator">Page {currentPage} of {totalPages}</span>
-        </div>
-      </>
-    )}
-  </div>
-);
+            <span className="page-indicator">Page {currentPage} of {totalPages}</span>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ExploreListings;

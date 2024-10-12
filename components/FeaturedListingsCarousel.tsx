@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Slider from "react-slick";
 import Image from "next/image";
 
@@ -16,49 +16,42 @@ const options = {
   }
 };
 
-
-
-interface Listing {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  price: string;
-}
-
-const listings: Listing[] = [];
-
-const fetchListingsByCoordinates = async () => {
-
-  try {
-    const url = 'https://zillow56.p.rapidapi.com/search_coordinates?status=forSale&output=json&sort=featured&listing_type=by_agent&isLotLand=false&doz=any&long=-87.5711&lat=37.9716&d=120' // Build URL using lat and lon
-    const response = await fetch(url, options);
-    const result = await response.json();
-
-    // Log the full result to understand its structure
-    console.log(Array.isArray(result.results));
-    console.log(result);
-    
-    // Check if result is an array and set it to listings
-    if (result.results) {
-      // If listings are nested inside the result object, extract them
-    for (let i = 0; i < 3; i++) {
-      listings.push(new listings(i, result.results[i].imgSrc, result.results[i].streetAddress, result.results[i].homeType, result.results[i].price));
-      listings[i].image = result.results[i].imgSrc;
-      
-      }
-    } else {
-      // If the result structure is unexpected, set listings to an empty array
-     
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
-
-fetchListingsByCoordinates();
-
 const FeaturedListingsCarousel: React.FC = () => {
+    const [listings, setListings] = useState([]); // Ensure listings starts as an array
+    const [loading, setLoading] = useState(true); // Loading state
+
+
+    const longitude = -87.5711;
+    const latitude = 37.9716;
+
+    useEffect(() => {
+    const fetchListingsByCoordinates = async () => {
+      setLoading(true); // Set loading to true before fetching
+
+      try {
+        const url = `https://zillow56.p.rapidapi.com/search_coordinates?status=forSale&output=json&sort=featured&listing_type=by_agent&isLotLand=false&doz=any&long=${longitude}&lat=${latitude}&d=120`
+        const response = await fetch(url, options);
+        const result = await response.json();
+        
+        // Check if result is an array and set it to listings
+        if (result.results) {
+          result.results.length = 3;
+          // If listings are nested inside the result object, extract them
+          setListings(result.results);
+        } else {
+          // If the result structure is unexpected, set listings to an empty array
+          setListings([]);
+        }
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Set loading to false in case of error
+      }
+    };
+
+    fetchListingsByCoordinates();
+    
+  }, []); // Run effect only once when the component mounts
   const settings = {
     dots: false,
     infinite: false,
@@ -93,13 +86,15 @@ const FeaturedListingsCarousel: React.FC = () => {
             <div key={listing.id} className="p-4">
               <div className="card hover:shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
                 <div className="relative h-65">
-                <img src={listing.image}  />
+                <a href={`https://www.zillow.com/homedetails/${listing.zpid}_zpid`} target="_blank" rel="noopener noreferrer">
+                      <img src={listing.imgSrc} alt="Listing" />
+                    </a>
                 </div>
                 <div className="p-4 mb-12">
                   <h3 className="text-xl font-bold text-[#002352] mb-2">
-                    {listing.title}
+                    {listing.streetAddress}
                   </h3>
-                  <p className="text-gray-600">{listing.description}</p>
+                  <p className="text-gray-600">{listing.streetAddress}</p>
                   <p className="text-lg font-semibold text-[#87b3ff] mt-4">
                     {listing.price}
                   </p>

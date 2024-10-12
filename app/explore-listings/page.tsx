@@ -1,7 +1,5 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
-
-
 
 const options = {
   method: 'GET',
@@ -12,55 +10,58 @@ const options = {
 };
 
 const ExploreListings = () => {
-  const [listings, setListings] = useState([]); // Ensure listings starts as an array
-  const [loading, setLoading] = useState(true); // Loading state
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(0); // Track the total number of pages
 
- 
   const longitude = -87.5711;
   const latitude = 37.9716;
 
-  // Fetch data using longitude and latitude
   useEffect(() => {
-    const fetchListingsByCoordinates = async () => {
-      setLoading(true); // Set loading to true before fetching
+    const fetchListingsByCoordinates = async (page) => {
+      setLoading(true);
 
       try {
-        const url = 'https://zillow56.p.rapidapi.com/search_coordinates?status=forSale&output=json&sort=priorityscore&listing_type=by_agent&isLotLand=false&doz=any&long=-87.5711&lat=37.9716&d=120' // Build URL using lat and lon
+        const url = `https://zillow56.p.rapidapi.com/search_coordinates?status=forSale&output=json&sort=priorityscore&listing_type=by_agent&isLotLand=false&doz=any&long=${longitude}&lat=${latitude}&d=120&page=${page}`;
         const response = await fetch(url, options);
         const result = await response.json();
 
-        // Log the full result to understand its structure
-        console.log(Array.isArray(result.results));
-        console.log(result);
-        
-        // Check if result is an array and set it to listings
+        console.log(result); // Log the full result to understand its structure
+
         if (result.results) {
-          // If listings are nested inside the result object, extract them
           setListings(result.results);
+          setTotalPages(result.totalPages); // Set total pages from the API response
         } else {
-          // If the result structure is unexpected, set listings to an empty array
           setListings([]);
         }
 
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false);
       }
     };
 
-    fetchListingsByCoordinates();
-  }, []); // Run effect only once when the component mounts
+    fetchListingsByCoordinates(currentPage); // Pass currentPage to the fetch function
+  }, [currentPage]); // Run effect whenever currentPage changes
+
+  // Function to handle page change
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
-    <div>
-      <h1>Explore Listings Near Coordinates: Lat {latitude}, Lon {longitude}</h1>
-      <p>Browse listings from properties near this area.</p>
+  <div className="container">
+    <h1>Explore Listings Near Coordinates: Lat {latitude}, Lon {longitude}</h1>
+    <p>Browse listings from properties near this area.</p>
 
-      {/* Display listings or loading indicator */}
-      {loading ? (
-        <p>Loading listings...</p>
-      ) : (
+    {loading ? (
+      <p>Loading listings...</p>
+    ) : (
+      <>
         <ul>
           {Array.isArray(listings) && listings.length > 0 ? (
             listings.map((listing, index) => (
@@ -69,12 +70,10 @@ const ExploreListings = () => {
                 <p><strong>Price:</strong> {listing.price}</p>
                 <div>
                   <strong>Images:</strong>
-                  {listing.imgSrc && 1 ? (
-                    <div>
-                    
-                    <img src={listing.imgSrc} width="200px" />
-                  
-                    </div>
+                  {listing.imgSrc ? (
+                    <a href={`https://www.zillow.com/homedetails/${listing.zpid}_zpid`} target="_blank" rel="noopener noreferrer">
+                      <img src={listing.imgSrc} alt="Listing" />
+                    </a>
                   ) : (
                     <p>No images available</p>
                   )}
@@ -85,9 +84,47 @@ const ExploreListings = () => {
             <p>No listings found</p>
           )}
         </ul>
-      )}
-    </div>
-  );
+
+        {/* Enhanced pagination controls */}
+        <div className="pagination">
+          {(() => {
+            const pageNumbers = [];
+            const maxPagesToShow = 5; // Number of pages before and after current page
+            const startPage = Math.max(1, currentPage - maxPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + maxPagesToShow);
+
+            // Add "..." to indicate skipped pages when needed
+            if (startPage > 1) {
+              pageNumbers.push(1);
+              if (startPage > 2) pageNumbers.push('...'); // Indicate skipped pages
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+              pageNumbers.push(i);
+            }
+
+            if (endPage < totalPages) {
+              if (endPage < totalPages - 1) pageNumbers.push('...'); // Indicate skipped pages
+              pageNumbers.push(totalPages);
+            }
+
+            return pageNumbers.map((number) => (
+              <button
+                key={number}
+                onClick={() => handlePageChange(number)}
+                disabled={currentPage === number}
+              >
+                {number}
+              </button>
+            ));
+          })()}
+
+          <span className="page-indicator">Page {currentPage} of {totalPages}</span>
+        </div>
+      </>
+    )}
+  </div>
+);
 };
 
 export default ExploreListings;
